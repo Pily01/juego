@@ -1,0 +1,446 @@
+
+/////////////////////////////////////////////////////////////////////////////////
+////////////////// G A M E  ----  P R O J E C T /////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+/////// I R O N   H A C K  ------ P I L Y ------- N O V / 1 6 / 2 0 1 8 ////////
+////////////////////////////////////////////////////////////////////////////////
+
+
+/////-°°°°----------------------C A N V A S -------------------------------------°°°°-//
+
+var canvas = document.getElementById("gameCanvas")
+var ctx = canvas.getContext("2d")
+var score = 20
+
+var canvas2 = document.getElementById("dataCanvas")
+var ctx2 = canvas2.getContext("2d")
+
+
+/////-°°°°----------------------V A R I A B L E S --------------------------------°°°°-//
+
+var interval
+
+var frames = 0
+
+var gameOverLogo = document.createElement("img")
+gameOverLogo.src = "gameOverLogo.png"
+
+var youRockLogon = document.createElement("img")
+youRockLogon.src = "youRockLogo.png"
+
+  // # Arrows Data
+var arrowsSrc = ["arrow1.png", "arrow2.png","arrow3.png","arrow4.png","arrow5.png"]
+var arrows = []
+
+  // #Letters Data (x coordinates, keyCode, image source)
+var letters = []
+var lettersIndex = [0,1,2,3,4]
+var xCoord = [55, 175, 305, 425, 545]
+var lettersKeyCode = [65,83,68,70,71]
+var lettersSrc = ["letterA.png", "letterS.png","letterD.png", "letterF.png","letterG.png"]
+
+  // # Images sources
+var images = {
+  bg: "danceFloor.png",
+  dancer: "http://pixelartmaker.com/art/f517e09af9b5f97.png",
+  danceBall: "https://vignette.wikia.nocookie.net/pufflescp/images/4/43/Purple_Puffle%27s_Disco_Ball_art.PNG/revision/latest?cb=20130104022203",
+  scoreSpeaker: "speakerScore.png",
+  dansometerM:"dansometerM.png",
+  dansometerL:"dansometerL.png",
+  dansometerH:"dansometerH.png",
+}
+
+  // # Songs sources
+var weWill = document.getElementById("weWill")
+var weWillAudio = document.createElement("audio")
+weWillAudio.src = "Queen- We will rock you con letra.mp3"
+
+var boogie = document.getElementById("boogie")
+var boogieAudio = document.createElement("audio")
+boogieAudio.src = "Earth, Wind & Fire - Boogie Wonderland.mp3"
+
+var gameOvAudio = document.createElement("audio")
+gameOvAudio.src = "Gameover Sound Effect.mp3"
+
+var winnerAudio = document.createElement("audio")
+winnerAudio.src = "arcade-game-menu-music-loop-sound-effect-8-bit-style.mp3"
+
+var songMenu = document.getElementById("songMenu")
+var containerPadre = document.getElementById("papa")
+
+boogie.addEventListener("click", function(){
+  boogieAudio.play()
+  boogie.style.display = "none"
+  weWill.style.display = "none"
+  songMenu.style.display = "none"
+  containerPadre.style.display = "flex"
+})
+
+weWill.addEventListener("click", function(){
+  weWillAudio.play()
+  boogie.style.display = "none"
+  weWill.style.display = "none"
+  songMenu.style.display = "none"
+  containerPadre.style.display = "flex"
+})
+
+weWillAudio.onended = function() {
+  clearInterval(interval)
+  ctx.drawImage(youRockLogon, 90, 60, 380, 480);
+  interval = null
+  winnerAudio.play()
+};
+
+boogieAudio.onended = function() {
+  clearInterval(interval)
+  ctx.drawImage(youRockLogon, 90, 60, 500, 450);
+  interval = null
+  winnerAudio.play();
+};
+
+
+
+
+
+
+/////-°°°°----------------------C L A S S E S -----------------------------------°°°°-/////
+
+  //# DANCE FLOOR CLASS
+function DanceFloor(){
+  this.x = 0
+  this.y = 0
+  this.width = canvas.width
+  this.height = canvas.height
+  this.image = new Image()
+  this.image.src = images.bg
+
+        //Draw function: changes the image possition (makes it infinite)
+  this.draw = function(){
+    this.y++
+    if(this.y > this.height) this.y = 0
+    ctx.drawImage(this.image,this.x,this.y,this.width,this.height)
+    ctx.drawImage(this.image,this.x,this.y - this.height,this.width,this.height)
+  }
+}
+
+  //# DANCER CLASS
+function Dancer(){
+  DanceFloor.call(this)
+  this.x = 275
+  this.y = 470
+  this.width = 80
+  this.height = 80
+  this.image.src = images.dancer
+        //Draw function: prints the Dancer
+  this.draw = function(){
+    ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
+  }
+}
+
+  //# LETTERS CLASS
+    // !! CHECAR COMO SE OBTIENEN LOS DATOS DE ACUERDO AL INDEX
+  function Letter(index){
+    DanceFloor.call(this)
+    this.x = xCoord[index]
+    this.y = -100
+    this.width = 60
+    this.height = 60
+    this.image.src = lettersSrc[index]
+    this.keyCode = lettersKeyCode[index]
+
+      //Draw function: prints moving letters
+    this.draw = function(){
+      this.y+=5
+      ctx.drawImage(this.image,this.x,this.y,this.width,this.height) 
+    }
+    //Is Function: returns True if arrow image is touching another item
+    this.isTouching = function(item){
+      return (this.x < item.x + item.width) &&
+      (this.x + this.width > item.x) &&
+      (this.y < item.y + item.height) &&
+      (this.y + this.height > item.y);
+    }
+  }
+
+  //# ARROWS CLASS
+  function ArrowImage(coord, index){
+    DanceFloor.call(this)
+    this.x = coord
+    this.y = 400
+    this.width = 70
+    this.height = 70
+    this.image.src = arrowsSrc[index]
+      
+     //Draw function: prints arrows
+    this.draw = function(){
+      ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
+    }
+
+    //Is Function: returns True if arrow image is touching another item
+    this.isTouching = function(item){
+      return (this.x < item.x + item.width) &&
+      (this.x + this.width > item.x) &&
+      (this.y < item.y + item.height) &&
+      (this.y + this.height > item.y);
+    }
+  }
+
+  //# SPEAKER SCORE CLASS
+  function SpeakerScore(){
+    DanceFloor.call(this)
+    this.x = 10
+    this.y =0
+    this.width = 480
+    this.height = 220
+    this.image.src = images.scoreSpeaker
+    //Draw function: prints speaker
+    this.draw = function(){
+      ctx2.drawImage(this.image, this.x, this.y, this.width, this.height)
+    }
+
+  }
+
+  //# DANSOMETER CLASS
+  function Dansometer(){
+    DanceFloor.call(this)
+    this.x =10
+    this.y =320
+    this.width=250
+    this.height = 200
+    this.image.src = images.dansometerM
+    //Draw function: prints dansometer
+    this.draw = function(){
+      ctx2.drawImage(this.image, this.x, this.y, this.width, this.height)
+    }
+  }
+
+
+
+
+/////-°°°°----------------------I N S T A N C I A S -------------------------------°°°°-/////
+var bg = new DanceFloor()
+var dancer = new Dancer()
+var speakerScore = new SpeakerScore()
+var dansometer = new Dansometer()
+var letterA = new Letter()
+var arrow1 = new ArrowImage(50, 0)
+arrows.push(arrow1)
+var arrow2 = new ArrowImage(170, 1)
+arrows.push(arrow2)
+var arrow3 = new ArrowImage(300, 2)
+arrows.push(arrow3)
+var arrow4 = new ArrowImage(420, 3)
+arrows.push(arrow4)
+var arrow5 = new ArrowImage(540, 4)
+arrows.push(arrow5)
+
+
+
+/////-°°°°----------------------M A I N   F U N C T I O N S ---------------------°°°°-/////
+  
+  //# Start Game: sets an interval
+function start(){
+  frames = 0
+  if(!interval) interval = setInterval(update,1000/60)
+}
+
+  //# Update: draws elements on canvas and calls main funcitons
+function update(){
+  frames ++
+  ctx.clearRect(0,0,canvas.width, canvas.height)
+  bg.draw()
+  dancer.draw()
+  drawLetters()
+  arrow1.draw() 
+  arrow2.draw()
+  arrow3.draw()
+  arrow4.draw()
+  arrow5.draw()
+  speakerScore.draw()
+  dansometer.draw()
+  deleteOldLetter()
+  drawScore()
+  chandeDansometer()
+}
+
+  //# Game Over: clears interval and prints score on screen
+function gameOver(){
+    clearInterval(interval)
+    ctx.drawImage(gameOverLogo, 90, 60, 500, 450)
+
+    interval = null
+    weWillAudio.pause()
+    boogieAudio.pause()
+    gameOvAudio.play()
+
+}
+
+  //# Widow on Load
+window.onload = function(){
+  start()
+}
+
+/////-°°°°----------------------A U X   F U N C T I O N S -----------------------°°°°-/////
+
+  //# Generates Letters
+  function generateLetters(){
+    if(frames%30===0) {
+        var index = lettersIndex[Math.floor(Math.random()*lettersIndex.length)]
+        letters.push(new Letter(index))
+    }
+  }
+  
+    //# Draw Letters
+  function drawLetters(){
+    generateLetters()
+    letters.forEach(function(letter){
+        letter.draw()
+    })
+  }
+
+    //# Delete Old Letter (deletes first element of letters once it passes a certain y coordenate)
+  function deleteOldLetter(){
+    if(letters[0].y > 410){
+      letters.shift()
+     
+    }
+  }
+    
+    //# Check Letter Collition
+  function checkLetterCol(code){
+    var currentLetter = letters[0]
+    console.log("llamada")
+    switch(code){
+      case 65:
+      if(currentLetter.isTouching(arrow1)){
+        score+= 2
+        arrow1.image.src="arrow1On.png"
+      } else{
+        score-= 3
+        if(score < 0){
+          gameOver()
+        }
+      }
+      return 
+      case 83:
+      if(currentLetter.isTouching(arrow2)){
+        score+=2
+        arrow2.image.src = "arrow2On.png"
+      } else{
+        score-= 3
+        if(score < 0){
+          gameOver()
+        }
+      }
+      return 
+      case 68:
+      if(currentLetter.isTouching(arrow3)){
+        score+=2
+        arrow3.image.src = "arrow3On.png"
+      }else{
+        score-= 3
+        if(score < 0){
+          gameOver()
+        }
+      }
+      return 
+      case 70:
+      if(currentLetter.isTouching(arrow4)){
+        score+= 2
+        arrow4.image.src = "arrow4On.png"
+      }else{
+        score-= 3
+        if(score < 0){
+          gameOver()
+        }
+      }
+      return  
+      case 71:
+      if(currentLetter.isTouching(arrow5)){
+        score+= 2
+        arrow5.image.src = "arrow5On.png"
+      }else{
+        score-= 3
+        if(score < 0){
+          gameOver()
+        }
+      }
+      return 
+    }
+  }
+
+
+    //# Draw Score
+  function drawScore(){
+    ctx2.fillStyle = "white"
+    ctx2.strokeStyle = 'black'
+    ctx2.font = "bold 45px Arial"
+    ctx2.fillText("Score: " + score, 155, 170)
+    ctx2.strokeText('Score: ' + score, 155, 170)
+  }
+
+  
+    //# Change Dansometer
+    function chandeDansometer(){
+      if(score > 120){
+        dansometer.image.src = "dansometerH.png"
+      }else if(score > 60 && score < 121){
+        dansometer.image.src = "dansometerM.png"
+      }else{
+        dansometer.image.src = "dansometerL.png"
+      }
+
+    }
+
+
+/////-°°°°----------------------L I S T E N E R S -------------------------------°°°°-/////
+
+addEventListener('keydown',function(e){
+  checkLetterCol(e.keyCode)
+  return 
+})
+
+  // # Para "prender" las flechas cuando sus teclas son presionadas
+addEventListener('keypress', function(e){
+  switch (e.key) {
+    case 'a':
+    setTimeout(() => {
+      arrow1.image.src = "arrow1.png"
+    }, 200)
+      arrow1.image.src = "arrow1On.png"      
+    
+    return
+    
+    case "s":
+    setTimeout(() => {
+      arrow2.image.src = "arrow2.png"
+    }, 200)
+      arrow2.image.src = "arrow2On.png"      
+   return
+    
+    case "d":
+  setTimeout(() => {
+    arrow3.image.src = "arrow3.png"
+  }, 200)
+    arrow3.image.src = "arrow3On.png"
+  return
+    
+    case "f":
+    setTimeout(() => {
+      arrow4.image.src = "arrow4.png"
+    }, 200)
+      arrow4.image.src = "arrow4On.png"
+  return
+    case "g":
+    setTimeout(() => {
+      arrow5.image.src = "arrow5.png"
+    }, 200)
+      arrow5.image.src = "arrow5On.png"
+  return      
+
+
+}})
+
+
+/////-°°°°---------------------- T E S T I N G ----------------------------------°°°°-/////
+
