@@ -1,0 +1,27 @@
+body{
+  background-image: url("background2.png")
+}
+
+.header{
+  text-align: center;
+}
+
+p{
+  color:white;
+  font-size: 1.5em;
+  font-family: 'Anton', sans-serif;
+}
+
+#article1{
+  margin-left: 100px;
+  display: inline-block;
+}
+
+#article2{
+  margin-left: 150px;
+  display: inline-block;
+}
+
+#quote{
+  font-size: 2em;
+}

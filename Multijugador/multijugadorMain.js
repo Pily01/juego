@@ -13,6 +13,7 @@ var score = 20
 
 var canvas2 = document.getElementById("gameCanvas2")
 var ctx2 = canvas2.getContext("2d")
+var score2 = 20
 
 
 /////-°°°°----------------------V A R I A B L E S --------------------------------°°°°-//
@@ -69,6 +70,20 @@ boogieAudio.src = "Earth, Wind & Fire - Boogie Wonderland.mp3"
 var gameOvAudio = document.createElement("audio")
 gameOvAudio.src = "Gameover Sound Effect.mp3"
 
+var despacito = document.getElementById("despacito")
+var despacitoAudio = document.createElement("audio")
+despacitoAudio.src = "Luis Fonsi Despacito ft Daddy Yankee (with lyrics - con letra) (Descarga - Download).mp3"
+
+var billiejean = document.getElementById("billiejean")
+var billiejeanAudio = document.createElement("audio")
+billiejeanAudio.src = "Billie Jean by Michael Jackson w Lyrics.mp3"
+
+var quebello = document.getElementById("quebello")
+var quebelloAudio = document.createElement("audio")
+quebelloAudio.src = "QUE BELLO - MARGARITA LA DIOSA DE LA CUMBIA (En Vivo).mp3"
+
+
+
 var winnerAudio = document.createElement("audio")
 winnerAudio.src = "arcade-game-menu-music-loop-sound-effect-8-bit-style.mp3"
 
@@ -79,6 +94,9 @@ boogie.addEventListener("click", function(){
   boogieAudio.play()
   boogie.style.display = "none"
   weWill.style.display = "none"
+  despacito.style.display = "none"
+  billiejean.style.display = "none"
+  quebello.style.display = "none"
   songMenu.style.display = "none"
   containerPadre.style.display = "flex"
 })
@@ -87,28 +105,102 @@ weWill.addEventListener("click", function(){
   weWillAudio.play()
   boogie.style.display = "none"
   weWill.style.display = "none"
+  despacito.style.display = "none"
+  billiejean.style.display = "none"
+  quebello.style.display = "none"
   songMenu.style.display = "none"
   containerPadre.style.display = "flex"
 })
 
+despacito.addEventListener("click", function(){
+  despacitoAudio.play()
+  boogie.style.display = "none"
+  weWill.style.display = "none"
+  despacito.style.display = "none"
+  billiejean.style.display = "none"
+  quebello.style.display = "none"
+  songMenu.style.display = "none"
+  containerPadre.style.display = "flex"
+})
+
+billiejean.addEventListener("click", function(){
+  billiejeanAudio.play()
+  boogie.style.display = "none"
+  weWill.style.display = "none"
+  despacito.style.display = "none"
+  billiejean.style.display = "none"
+  quebello.style.display = "none"
+  songMenu.style.display = "none"
+  containerPadre.style.display = "flex"
+})
+
+quebello.addEventListener("click", function(){
+  quebelloAudio.play()
+  boogie.style.display = "none"
+  weWill.style.display = "none"
+  despacito.style.display = "none"
+  billiejean.style.display = "none"
+  quebello.style.display = "none"
+  songMenu.style.display = "none"
+  containerPadre.style.display = "flex"
+})
+
+
+
 weWillAudio.onended = function() {
   clearInterval(interval)
-  ctx.drawImage(youRockLogon, 90, 60, 380, 480);
+  if(score > score2){
+    ctx.drawImage(youRockLogon, 120, 60, 380, 380);
+  }else{
+    ctx2.drawImage(youRockLogon, 120, 60, 380, 380);
+  }
   interval = null
   winnerAudio.play()
 };
 
 boogieAudio.onended = function() {
   clearInterval(interval)
-  ctx.drawImage(youRockLogon, 90, 60, 500, 450);
+  if(score > score2){
+    ctx.drawImage(youRockLogon, 120, 60, 380, 380);
+  }else{
+    ctx2.drawImage(youRockLogon, 120, 60, 380, 380);
+  }
   interval = null
   winnerAudio.play();
 };
 
+despacitoAudio.onended = function() {
+  clearInterval(interval)
+  if(score > score2){
+    ctx.drawImage(youRockLogon, 120, 60, 380, 380);
+  }else{
+    ctx2.drawImage(youRockLogon, 120, 60, 380, 380);
+  }
+  interval = null
+  winnerAudio.play();
+};
 
+billiejeanAudio.onended = function() {
+  clearInterval(interval)
+  if(score > score2){
+    ctx.drawImage(youRockLogon, 120, 60, 380, 380);
+  }else{
+    ctx2.drawImage(youRockLogon, 120, 60, 380, 380);
+  }
+  interval = null
+  winnerAudio.play();
+};
 
-
-
+quebelloAudio.onended = function() {
+  clearInterval(interval)
+  if(score > score2){
+    ctx.drawImage(youRockLogon, 120, 60, 380, 380);
+  }else{
+    ctx2.drawImage(youRockLogon, 120, 60, 380, 380);
+  }
+  interval = null
+  winnerAudio.play();
+};
 
 /////-°°°°----------------------C L A S S E S -----------------------------------°°°°-/////
 
@@ -248,20 +340,6 @@ function Dancer(){
 
 
 /*
-  //# SPEAKER SCORE CLASS
-  function SpeakerScore(){
-    DanceFloor.call(this)
-    this.x = 10
-    this.y =0
-    this.width = 480
-    this.height = 220
-    this.image.src = images.scoreSpeaker
-    //Draw function: prints speaker
-   // this.draw = function(){
-    //  ctx2.drawImage(this.image, this.x, this.y, this.width, this.height)
-    //}
-
-  }
 
   //# DANSOMETER CLASS
   function Dansometer(){
@@ -340,19 +418,35 @@ function update(){
   //dansometer.draw()
   deleteOldLetter()
   deleteOldLetter2()
-  //drawScore()
+  drawScore()
   //chandeDansometer()
 }
 
   //# Game Over: clears interval and prints score on screen
-function gameOver(){
+function gameOver1(){
     clearInterval(interval)
     ctx.drawImage(gameOverLogo, 90, 60, 500, 450)
+    ctx2.drawImage(youRockLogon, 120, 60, 380, 380);
 
     interval = null
     weWillAudio.pause()
     boogieAudio.pause()
+    despacitoAudio.pause()
+    billiejeanAudio.pause()
+    quebelloAudio.pause()
     gameOvAudio.play()
+
+}
+
+function gameOver2(){
+  clearInterval(interval)
+  ctx2.drawImage(gameOverLogo, 90, 60, 500, 450)
+  ctx.drawImage(youRockLogon, 120, 60, 380, 380);
+
+  interval = null
+  weWillAudio.pause()
+  boogieAudio.pause()
+  gameOvAudio.play()
 
 }
 
@@ -424,7 +518,7 @@ window.onload = function(){
       } else{
         score-= 3
         if(score < 0){
-          gameOver()
+          gameOver1()
         }
       }
       return 
@@ -435,7 +529,7 @@ window.onload = function(){
       } else{
         score-= 3
         if(score < 0){
-          gameOver()
+          gameOver1()
         }
       }
       return 
@@ -446,7 +540,7 @@ window.onload = function(){
       }else{
         score-= 3
         if(score < 0){
-          gameOver()
+          gameOver1()
         }
       }
       return 
@@ -457,7 +551,7 @@ window.onload = function(){
       }else{
         score-= 3
         if(score < 0){
-          gameOver()
+          gameOver1()
         }
       }
       return  
@@ -468,7 +562,7 @@ window.onload = function(){
       }else{
         score-= 3
         if(score < 0){
-          gameOver()
+          gameOver1()
         }
       }
       return 
@@ -483,56 +577,56 @@ window.onload = function(){
     switch(code){
       case 72:
       if(currentLetter.isTouching(arrow6)){
-        score+= 2
+        score2+= 2
         arrow6.image.src="arrow1On.png"
       } else{
-        score-= 3
-        if(score < 0){
-          gameOver()
+        score2-= 3
+        if(score2 < 0){
+          gameOver2()
         }
       }
       return 
       case 74:
       if(currentLetter.isTouching(arrow7)){
-        score+=2
+        score2+=2
         arrow7.image.src = "arrow2On.png"
       } else{
-        score-= 3
-        if(score < 0){
-          gameOver()
+        score2-= 3
+        if(score2 < 0){
+          gameOver2()
         }
       }
       return 
       case 75:
       if(currentLetter.isTouching(arrow8)){
-        score+=2
+        score2+=2
         arrow8.image.src = "arrow3On.png"
       }else{
-        score-= 3
-        if(score < 0){
-          gameOver()
+        score2-= 3
+        if(score2 < 0){
+          gameOver2()
         }
       }
       return 
       case 76:
       if(currentLetter.isTouching(arrow9)){
-        score+= 2
+        score2+= 2
         arrow9.image.src = "arrow4On.png"
       }else{
-        score-= 3
-        if(score < 0){
-          gameOver()
+        score2-= 3
+        if(score2 < 0){
+          gameOver2()
         }
       }
       return  
       case 192:
       if(currentLetter.isTouching(arrow10)){
-        score+= 2
+        score2+= 2
         arrow10.image.src = "arrow5On.png"
       }else{
-        score-= 3
-        if(score < 0){
-          gameOver()
+        score2-= 3
+        if(score2 < 0){
+          gameOver2()
         }
       }
       return 
@@ -541,16 +635,22 @@ window.onload = function(){
 
 
     //# Draw Score
-  /*
+  
     function drawScore(){
     ctx2.fillStyle = "white"
     ctx2.strokeStyle = 'black'
     ctx2.font = "bold 45px Arial"
-    ctx2.fillText("Score: " + score, 155, 170)
-    ctx2.strokeText('Score: ' + score, 155, 170)
+    ctx2.fillText("Score: " + score2, 20, 40)
+    ctx2.strokeText('Score: ' + score2, 20, 40)
+
+    ctx.fillStyle = "white"
+    ctx.strokeStyle = 'black'
+    ctx.font = "bold 45px Arial"
+    ctx.fillText("Score: " + score, 20, 40)
+    ctx.strokeText('Score: ' + score, 20, 40)
   }
 
-  
+  /*
     //# Change Dansometer
     function chandeDansometer(){
       if(score > 120){
@@ -562,7 +662,8 @@ window.onload = function(){
       }
 
     }
-    */
+  */
+    
 
 
 /////-°°°°----------------------L I S T E N E R S -------------------------------°°°°-/////
@@ -583,7 +684,7 @@ addEventListener('keypress', function(e){
     case 'a':
     setTimeout(() => {
       arrow1.image.src = "arrow1.png"
-    }, 200)
+    }, 150)
       arrow1.image.src = "arrow1On.png"      
     
     return
@@ -591,27 +692,27 @@ addEventListener('keypress', function(e){
     case "s":
     setTimeout(() => {
       arrow2.image.src = "arrow2.png"
-    }, 200)
+    }, 150)
       arrow2.image.src = "arrow2On.png"      
    return
     
     case "d":
   setTimeout(() => {
     arrow3.image.src = "arrow3.png"
-  }, 200)
+  }, 150)
     arrow3.image.src = "arrow3On.png"
   return
     
     case "f":
     setTimeout(() => {
       arrow4.image.src = "arrow4.png"
-    }, 200)
+    }, 150)
       arrow4.image.src = "arrow4On.png"
   return
     case "g":
     setTimeout(() => {
       arrow5.image.src = "arrow5.png"
-    }, 200)
+    }, 150)
       arrow5.image.src = "arrow5On.png"
   return      
 
@@ -624,7 +725,7 @@ addEventListener('keypress', function(e){
     case 'h':
     setTimeout(() => {
       arrow6.image.src = "arrow1.png"
-    }, 200)
+    }, 150)
       arrow6.image.src = "arrow1On.png"      
     
     return
@@ -632,27 +733,27 @@ addEventListener('keypress', function(e){
     case "j":
     setTimeout(() => {
       arrow7.image.src = "arrow2.png"
-    }, 200)
+    }, 150)
       arrow7.image.src = "arrow2On.png"      
    return
     
     case "k":
   setTimeout(() => {
     arrow8.image.src = "arrow3.png"
-  }, 200)
+  }, 150)
     arrow8.image.src = "arrow3On.png"
   return
     
     case "l":
     setTimeout(() => {
       arrow9.image.src = "arrow4.png"
-    }, 200)
+    }, 150)
       arrow9.image.src = "arrow4On.png"
   return
     case "ñ":
     setTimeout(() => {
       arrow10.image.src = "arrow5.png"
-    }, 200)
+    }, 150)
       arrow10.image.src = "arrow5On.png"
   return      
 

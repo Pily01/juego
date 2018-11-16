@@ -50,7 +50,7 @@ var images = {
   dansometerH:"dansometerH.png",
 }
 
-  // # Songs sources
+  // # SONGS SOURCES
 var weWill = document.getElementById("weWill")
 var weWillAudio = document.createElement("audio")
 weWillAudio.src = "Queen- We will rock you con letra.mp3"
@@ -58,6 +58,18 @@ weWillAudio.src = "Queen- We will rock you con letra.mp3"
 var boogie = document.getElementById("boogie")
 var boogieAudio = document.createElement("audio")
 boogieAudio.src = "Earth, Wind & Fire - Boogie Wonderland.mp3"
+
+var despacito = document.getElementById("despacito")
+var despacitoAudio = document.createElement("audio")
+despacitoAudio.src = "Luis Fonsi Despacito ft Daddy Yankee (with lyrics - con letra) (Descarga - Download).mp3"
+
+var billiejean = document.getElementById("billiejean")
+var billiejeanAudio = document.createElement("audio")
+billiejeanAudio.src = "Billie Jean by Michael Jackson w Lyrics.mp3"
+
+var quebello = document.getElementById("quebello")
+var quebelloAudio = document.createElement("audio")
+quebelloAudio.src = "QUE BELLO - MARGARITA LA DIOSA DE LA CUMBIA (En Vivo).mp3"
 
 var gameOvAudio = document.createElement("audio")
 gameOvAudio.src = "Gameover Sound Effect.mp3"
@@ -72,6 +84,9 @@ boogie.addEventListener("click", function(){
   boogieAudio.play()
   boogie.style.display = "none"
   weWill.style.display = "none"
+  despacito.style.display = "none"
+  billiejean.style.display = "none"
+  quebello.style.display = "none"
   songMenu.style.display = "none"
   containerPadre.style.display = "flex"
 })
@@ -80,25 +95,80 @@ weWill.addEventListener("click", function(){
   weWillAudio.play()
   boogie.style.display = "none"
   weWill.style.display = "none"
+  despacito.style.display = "none"
+  billiejean.style.display = "none"
+  quebello.style.display = "none"
+  songMenu.style.display = "none"
+  containerPadre.style.display = "flex"
+})
+
+despacito.addEventListener("click", function(){
+  despacitoAudio.play()
+  boogie.style.display = "none"
+  weWill.style.display = "none"
+  despacito.style.display = "none"
+  billiejean.style.display = "none"
+  quebello.style.display = "none"
+  songMenu.style.display = "none"
+  containerPadre.style.display = "flex"
+})
+
+billiejean.addEventListener("click", function(){
+  billiejeanAudio.play()
+  boogie.style.display = "none"
+  weWill.style.display = "none"
+  despacito.style.display = "none"
+  billiejean.style.display = "none"
+  quebello.style.display = "none"
+  songMenu.style.display = "none"
+  containerPadre.style.display = "flex"
+})
+
+quebello.addEventListener("click", function(){
+  quebelloAudio.play()
+  boogie.style.display = "none"
+  weWill.style.display = "none"
+  despacito.style.display = "none"
+  billiejean.style.display = "none"
+  quebello.style.display = "none"
   songMenu.style.display = "none"
   containerPadre.style.display = "flex"
 })
 
 weWillAudio.onended = function() {
   clearInterval(interval)
-  ctx.drawImage(youRockLogon, 90, 60, 380, 480);
+  ctx.drawImage(youRockLogon, 120, 60, 380, 380);
   interval = null
   winnerAudio.play()
 };
 
 boogieAudio.onended = function() {
   clearInterval(interval)
-  ctx.drawImage(youRockLogon, 90, 60, 500, 450);
+  ctx.drawImage(youRockLogon, 120, 60, 500, 450);
   interval = null
   winnerAudio.play();
 };
 
+despacitoAudio.onended = function() {
+  clearInterval(interval)
+  ctx.drawImage(youRockLogon, 120, 60, 500, 450);
+  interval = null
+  winnerAudio.play();
+};
 
+billiejeanAudio.onended = function() {
+  clearInterval(interval)
+  ctx.drawImage(youRockLogon, 120, 60, 500, 450);
+  interval = null
+  winnerAudio.play();
+};
+
+quebelloAudio.onended = function() {
+  clearInterval(interval)
+  ctx.drawImage(youRockLogon, 120, 60, 500, 450);
+  interval = null
+  winnerAudio.play();
+};
 
 
 
@@ -271,6 +341,9 @@ function gameOver(){
     interval = null
     weWillAudio.pause()
     boogieAudio.pause()
+    despacitoAudio.pause()
+    billiejeanAudio.pause()
+    quebelloAudio.pause()
     gameOvAudio.play()
 
 }
